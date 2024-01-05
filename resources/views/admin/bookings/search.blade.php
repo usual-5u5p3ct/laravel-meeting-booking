@@ -64,9 +64,9 @@
                                         {{ $room->hourly_rate ? '$' . number_format($room->hourly_rate, 2) : 'FREE' }}
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#bookRoom" data-room-id="{{ $room->id }}">
+                                        <a href="{{ route('admin.showForm', ['roomId' => $room->id]) }}" class="btn btn-sm btn-primary">
                                             Book Room
-                                        </button>
+                                        </a>
                                     </td>
 
                                 </tr>
@@ -80,7 +80,8 @@
         @endif
     </div>
 </div>
-<div class="modal" tabindex="-1" role="dialog" id="bookRoom">
+
+{{-- <div class="modal" tabindex="-1" role="dialog" id="bookRoom">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -133,11 +134,13 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
+
 @endsection
 
 @section('scripts')
-<script>
+
+{{-- <script>
 $('#bookRoom').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var roomId = button.data('room-id');
@@ -149,5 +152,6 @@ $('#bookRoom').on('show.bs.modal', function (event) {
         modal.find('button[type="submit"]').trigger('click');
     });
 });
-</script>
+</script> --}}
+
 @endsection
