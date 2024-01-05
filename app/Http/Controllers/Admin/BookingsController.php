@@ -69,4 +69,8 @@ class BookingsController extends Controller
 
         return redirect()->route('admin.systemCalendar')->withStatus('A room has been successfully booked');
     }
+    public function showBookingForm($roomId)
+    {
+        return view('admin.bookings.form', ['roomId' => $roomId]);
+    }
 }
