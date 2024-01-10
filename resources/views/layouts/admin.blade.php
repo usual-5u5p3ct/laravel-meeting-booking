@@ -95,6 +95,10 @@
             {{ csrf_field() }}
         </form>
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -136,8 +140,8 @@
                 events: [{
 
                     title: 'First Meeting',
-                    start: '2024-01-09T00:30:00',
-                    end: '2024-01-09T01:30:00',
+                    start: '2024-01-10T00:30:00',
+                    end: '2024-01-10T01:30:00',
                     allDay: false // will make the time show
                 }]
             });
@@ -274,35 +278,68 @@
                 /* Adjust the width for smaller screens */
                 margin-left: auto;
                 margin-right: auto;
+                height: 100vh;
+                overflow-x: auto;
             }
 
-            .fc .fc-toolbar.fc-header-toolbar, .link, .roomSelect {
+            .fc .fc-toolbar.fc-header-toolbar,
+            .link,
+            .roomSelect {
                 font-size: small;
             }
 
-            .link {
-                margin-left: 30px;
+            .fc-toolbar-chunk .fc-toolbar-title {
+                /* color: red; */
+                margin-right: 55px;
             }
         }
 
         @media (max-width: 604px) {
-            .fc-toolbar-chunk, .link {
+            #calendar {
+                overflow-x: auto;
+            }
+
+            .fc-toolbar-chunk,
+            .link {
                 font-size: smaller;
             }
 
             .fc-toolbar-chunk .fc-toolbar-title {
+                /* color: blue; */
                 font-size: 0.8rem;
-                margin: 0 10px;
-            }
-
-            .link {
-                margin-left: 26px;
+                margin-right: 55px;
             }
         }
 
         @media (max-width: 466px) {
-            .fc-toolbar-chunk .fc-button-group, .link, .roomSelect {
+            #calendar {
+                overflow-x: auto;
+            }
+
+            .fc-toolbar-chunk .fc-button-group,
+            .link,
+            .roomSelect {
                 font-size: smaller;
+            }
+        }
+
+        @media (max-width: 375px) {
+            #calendar {
+                overflow-x: auto;
+            }
+
+            .roomSelect {
+                /* color: red; */
+                top: 75px;
+                width: 23px;
+            }
+
+            .fc-toolbar-chunk .fc-toolbar-title {
+                margin-left: 10px;
+            }
+
+            .fc-today-button {
+                display: none;
             }
         }
     </style>
