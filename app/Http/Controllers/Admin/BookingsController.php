@@ -42,6 +42,11 @@ class BookingsController extends Controller
         $request->validate([
             'title' => 'required',
             'room_id' => 'required',
+            'start_time' => 'required|date',
+            'end_time' => 'required|date|after:start_time|room_available:' . $request->input('room_id') . ',' . $request->input('start_time') . ',' . $request->input('end_time'),
+        ],
+        [
+            'room_available' => 'The room is not available for the selected time slot.',
         ]);
 
         $room = Room::findOrFail($request->input('room_id'));
@@ -65,7 +70,8 @@ class BookingsController extends Controller
         }
 
         return redirect()
-            ->route('admin.systemCalendar')->withStatus('A room has been successfully booked');
+            ->route('admin.systemCalendar')
+            ->withStatus('A room has been successfully booked');
     }
     public function showBookingForm($roomId)
     {

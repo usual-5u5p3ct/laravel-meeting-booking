@@ -249,6 +249,14 @@
             right: 26px;
         }
 
+        @media (max-width: 767px) {
+            .link {
+                position: relative;
+                top: -28px;
+                margin-left: 4rem;
+            }
+        }
+
         @media (max-width: 700px) {
             #calendar {
                 /* max-width: 90%; */
