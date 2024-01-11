@@ -125,29 +125,6 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script>
-        // FULLCALENDAR
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'timeGridDay',
-                initialDate: '2023-11-07',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: ''
-                },
-
-                events: [{
-
-                    title: 'First Meeting',
-                    start: '2024-01-10T00:30:00',
-                    end: '2024-01-10T01:30:00',
-                    allDay: false // will make the time show
-                }]
-            });
-            calendar.render();
-        });
-
         $(function() {
             let copyButtonTrans = '{{ trans('global.datatables.copy') }}'
             let csvButtonTrans = '{{ trans('global.datatables.csv') }}'

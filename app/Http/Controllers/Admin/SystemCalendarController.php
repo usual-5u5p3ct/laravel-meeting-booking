@@ -51,7 +51,6 @@ class SystemCalendarController extends Controller
             }
 
         }
-
         return view('admin.calendar.calendar', compact('events', 'rooms', 'users'));
 
     }
