@@ -18,7 +18,7 @@
                     <div class="col-md-5">
                         <div class="form-group">
                             <label for="room_id">Room</label>
-                            <select class="form-control select2" name="room_id" id="room_id" onchange="updateRoomLink()">
+                            <select class="form-control select2" name="room_id" id="room_id">
                                 @foreach ($rooms as $id => $room)
                                     <option value="{{ $id }}"
                                         {{ request()->input('room_id') == $id ? 'selected' : '' }}>{{ $room }}
@@ -48,8 +48,8 @@
             </form>
 
             <div>
-                <a id="roomLink" href="{{ route('admin.showForm', ['roomId' => $id]) }}"
-                    class="link border rounded-lg px-2 py-2 text-white no-underline bg-gray-800">Book Room</a>
+                <a id="roomLink" href="#"
+                    class="link border rounded-lg px-2 py-2 text-white no-underline bg-gray-800" onclick="validateAndRedirect()">Book Room</a>
             </div>
 
             <div id='calendar'></div>
@@ -86,14 +86,6 @@
             $('#flash-message').delay(3000).fadeOut(400);
         });
 
-
-        function updateRoomLink() {
-            var selectionRoom = document.getElementById('room_id').value;
-            var roomLink = document.getElementById('roomLink');
-
-            // update href with selected room ID
-            roomLink.href = "{{ route('admin.showForm', ':room_id') }}".replace(':room_id', selectionRoom);
-        }
         // $(document).ready(function() {
         //     // page is now ready, initialize the calendar...
         //     events = {!! json_encode($events) !!};
@@ -103,5 +95,21 @@
         //         events: events,
         //     })
         // });
+
+        function validateAndRedirect() {
+            var selectionRoom = document.getElementById('room_id').value;
+
+            // Check if room is selected
+            if (!selectionRoom) {
+                alert('Please select a room before booking!');
+                return;
+            }
+
+            var roomLink = document.getElementById('roomLink');
+            // update href with selected room ID
+            roomLink.href = "{{ route('admin.showForm', ':room_id') }}".replace(':room_id', selectionRoom);
+            // trigger link
+            roomLink.click();
+        }
     </script>
 @stop
