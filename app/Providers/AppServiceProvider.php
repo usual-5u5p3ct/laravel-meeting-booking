@@ -32,9 +32,19 @@ class AppServiceProvider extends ServiceProvider
             // Check if the room is available for booking
             $isAvailable = !Event::where('room_id', $roomId)
                 ->where(function ($query) use ($startTime, $endTime) {
-                    $query->whereBetween('start_time', [$startTime, $endTime])->whereBetween('end_time', [$startTime, $endTime]);
+                    // Check for overlapping bookings
+                    $query
+                        ->where(function ($q) use ($startTime, $endTime) {
+                            $q->where('start_time', '<', $startTime)->where('end_time', '>', $startTime);
+                        })
+                        ->where(function ($q) use ($startTime, $endTime) {
+                            $q->where('start_time', '<', $endTime)->where('end_time', '>', $endTime);
+                        })
+                        ->where(function ($q) use ($startTime, $endTime) {
+                            $q->whereBetween('start_time', [$startTime, $endTime])->whereBetween('end_time', [$startTime, $endTime]);
+                        });
                 })
-                ->exists();
+                ->doesntExist();
 
             return $isAvailable;
         });
