@@ -35,16 +35,19 @@ class AppServiceProvider extends ServiceProvider
                     // Check for overlapping bookings
                     $query
                         ->where(function ($q) use ($startTime, $endTime) {
-                            $q->where('start_time', '<', $startTime)->where('end_time', '>', $startTime);
+                            // Case 1: New booking starts within an existing booking
+                            $q->where('start_time', '<=', $startTime)->where('end_time', '>=', $startTime);
                         })
-                        ->where(function ($q) use ($startTime, $endTime) {
-                            $q->where('start_time', '<', $endTime)->where('end_time', '>', $endTime);
+                        ->orWhere(function ($q) use ($startTime, $endTime) {
+                            // Case 2: New booking ends within an existing booking
+                            $q->where('start_time', '<=', $endTime)->where('end_time', '>=', $endTime);
                         })
-                        ->where(function ($q) use ($startTime, $endTime) {
+                        ->orWhere(function ($q) use ($startTime, $endTime) {
+                            // Case 3: New booking completely overlaps with an existing booking
                             $q->whereBetween('start_time', [$startTime, $endTime])->whereBetween('end_time', [$startTime, $endTime]);
                         });
                 })
-                ->doesntExist();
+                ->exists();
 
             return $isAvailable;
         });
