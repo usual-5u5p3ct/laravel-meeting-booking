@@ -47,4 +47,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('add-balance', 'BalanceController@add')->name('balance.add');
 
     Route::resource('transactions', 'TransactionsController')->only(['index']);
+
+    // Route::get('booking-details', 'BookingsController@sendEmail');
 });

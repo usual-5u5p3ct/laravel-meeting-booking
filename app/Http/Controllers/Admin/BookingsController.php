@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Event;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreEventRequest;
 use App\Room;
-use App\Services\EventService;
+use App\Event;
 use Carbon\Carbon;
+use App\Mail\SendEmail;
 use Illuminate\Http\Request;
+use App\Services\EventService;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\StoreEventRequest;
 
 class BookingsController extends Controller
 {
@@ -39,15 +41,17 @@ class BookingsController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        $request->validate([
-            'title' => 'required',
-            'room_id' => 'required',
-            'start_time' => 'required|date',
-            'end_time' => 'required|date|after:start_time|room_available:' . $request->input('room_id') . ',' . $request->input('start_time') . ',' . $request->input('end_time'),
-        ],
-        [
-            'room_available' => 'The room is not available for the selected time slot.',
-        ]);
+        $request->validate(
+            [
+                'title' => 'required',
+                'room_id' => 'required',
+                'start_time' => 'required|date',
+                'end_time' => 'required|date|after:start_time|room_available:' . $request->input('room_id') . ',' . $request->input('start_time') . ',' . $request->input('end_time'),
+            ],
+            [
+                'room_available' => 'The room is not available for the selected time slot.',
+            ],
+        );
 
         $room = Room::findOrFail($request->input('room_id'));
 
@@ -69,6 +73,15 @@ class BookingsController extends Controller
             $eventService->createRecurringEvents($request->all());
         }
 
+        $bookingDetails = [
+            'room_id' => $request->input('room_id'),
+            'title' => $request->input('title'),
+            'start_time' => $request->input('start_time'),
+            'end_time' => $request->input('end_time')
+        ];
+
+        Mail::to(auth()->user()->email)->send(new SendEmail($bookingDetails));
+
         return redirect()
             ->route('admin.systemCalendar')
             ->withStatus('A room has been successfully booked');
@@ -77,4 +90,11 @@ class BookingsController extends Controller
     {
         return view('admin.bookings.form', ['roomId' => $roomId]);
     }
+
+    // public function sendEmail()
+    // {
+    //     Mail::to('fake@mail.com')->send(new SendEmail());
+
+    //     return view('emails.booking');
+    // }
 }
