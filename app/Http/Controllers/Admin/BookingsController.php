@@ -73,14 +73,26 @@ class BookingsController extends Controller
             $eventService->createRecurringEvents($request->all());
         }
 
-        $bookingDetails = [
+        $userBookingDetails = [
             'room_id' => $request->input('room_id'),
             'title' => $request->input('title'),
             'start_time' => $request->input('start_time'),
             'end_time' => $request->input('end_time')
         ];
 
-        Mail::to(auth()->user()->email)->send(new SendEmail($bookingDetails));
+        // Send email to user
+        Mail::to(auth()->user()->email)->send(new SendEmail($userBookingDetails, 'user'));
+
+        $adminBookingDetails = [
+            'room_id' => $request->input('room_id'),
+            'title' => $request->input('title'),
+            'start_time' => $request->input('start_time'),
+            'end_time' => $request->input('end_time'),
+            'user_email' => auth()->user()->email
+        ];
+
+        // Send email to admin
+        Mail::to('admin@admin.com')->send(new SendEmail($adminBookingDetails, 'admin'));
 
         return redirect()
             ->route('admin.systemCalendar')

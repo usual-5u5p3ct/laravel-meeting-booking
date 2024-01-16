@@ -12,14 +12,16 @@ class SendEmail extends Mailable
     use Queueable, SerializesModels;
 
     public $bookings;
+    public $recepientType;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($bookings)
+    public function __construct($bookings, $recepientType)
     {
         $this->bookings = $bookings;
+        $this->recepientType = $recepientType;
     }
 
     /**
@@ -29,6 +31,10 @@ class SendEmail extends Mailable
      */
     public function build()
     {
-        return $this->from('admin@booking.com')->markdown('emails.booking');
+        if ($this->recepientType === 'admin') {       // check for admin
+            return $this->from(auth()->user()->email)->view('emails.userBooking');
+        } else {
+            return $this->from('admin@booking.com')->view('emails.booking');
+        }
     }
 }
