@@ -29,9 +29,13 @@ class EventsController extends Controller
     {
         abort_if(Gate::denies('event_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $rooms = Room::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $rooms = Room::all()
+            ->pluck('name', 'id')
+            ->prepend(trans('global.pleaseSelect'), '');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = User::all()
+            ->pluck('name', 'id')
+            ->prepend(trans('global.pleaseSelect'), '');
 
         return view('admin.events.create', compact('rooms', 'users'));
     }
@@ -39,9 +43,10 @@ class EventsController extends Controller
     public function store(StoreEventRequest $request, EventService $eventService)
     {
         if ($eventService->isRoomTaken($request->all())) {
-            return redirect()->back()
-                    ->withInput($request->input())
-                    ->withErrors('This room is not available at the time you have chosen');
+            return redirect()
+                ->back()
+                ->withInput($request->input())
+                ->withErrors('This room is not available at the time you have chosen');
         }
 
         $event = Event::create($request->all());
@@ -51,16 +56,19 @@ class EventsController extends Controller
         }
 
         return redirect()->route('admin.events.index');
-
     }
 
     public function edit(Event $event)
     {
         abort_if(Gate::denies('event_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $rooms = Room::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $rooms = Room::all()
+            ->pluck('name', 'id')
+            ->prepend(trans('global.pleaseSelect'), '');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = User::all()
+            ->pluck('name', 'id')
+            ->prepend(trans('global.pleaseSelect'), '');
 
         $event->load('room', 'user');
 
@@ -72,7 +80,6 @@ class EventsController extends Controller
         $event->update($request->all());
 
         return redirect()->route('admin.events.index');
-
     }
 
     public function show(Event $event)
@@ -88,17 +95,20 @@ class EventsController extends Controller
     {
         abort_if(Gate::denies('event_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $event->delete();
+        $event->forceDelete();
 
         return back();
-
     }
 
     public function massDestroy(MassDestroyEventRequest $request)
     {
-        Event::whereIn('id', request('ids'))->delete();
+        abort_if(Gate::denies('event_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $eventIds = request('ids');
+
+        // Use forceDelete() for each individual record in the collection
+        Event::whereIn('id', $eventIds)->forceDelete();
 
         return response(null, Response::HTTP_NO_CONTENT);
-
     }
 }
