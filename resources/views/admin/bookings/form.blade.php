@@ -1,6 +1,11 @@
 @extends('layouts.admin')
 @section('content')
-    <!-- Remove modal-related elements -->
+    <!-- Overlay -->
+    <div id="overlay"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9998;">
+    </div>
+    <!-- Spinner -->
+    <div id="loadingScreen" class="loader" style="display: none;"></div>
     <div class="border border-black rounded-lg p-4" style="background-color: rgb(255 255 255);">
         <form action="{{ route('admin.bookRoom') }}" method="POST" id="bookingForm">
             @csrf
@@ -100,9 +105,27 @@
         </form>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            function submitForm() {
+            function showLoadingScreen() {
+                // Display loading screen
+                $('#overlay').show();
+                $('#loadingScreen').show();
+                console.log('Loading screen shown');
+            }
+
+            function hideLoadingScreen() {
+                // Hide loading screen
+                $('#overlay').hide();
+                $('#loadingScreen').hide();
+                console.log('Loading screen hidden');
+            }
+
+            window.submitForm = function() {
+                console.log('Submitting form...');
+                showLoadingScreen();
+
                 document.getElementById('bookingForm').submit();
             }
 
@@ -124,6 +147,17 @@
                 // Show modal
                 $('#confirmationModal').modal('show');
             });
+
+            // Test showing/hiding loading screen manually
+            // $('#testLoadingScreenButton').click(function() {
+            //     showLoadingScreen();
+            //     // Simulate some delay
+            //     setTimeout(function() {
+            //         hideLoadingScreen();
+            //     }, 3000);
+            // });
         });
     </script>
+    <!-- Add a test button to manually trigger loading screen -->
+    {{-- <button id="testLoadingScreenButton">Test Loading Screen</button> --}}
 @endsection
