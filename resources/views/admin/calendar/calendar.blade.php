@@ -12,7 +12,7 @@
         </div>
 
         <div class="card-body">
-            <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css' />
+            {{-- <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.10/fullcalendar.min.css' /> --}}
             <form>
                 <div class="row">
                     <div class="col-md-5">
@@ -61,13 +61,15 @@
     @parent
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             events = {!! json_encode($events) !!};
 
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
+                slotMinTime: '09:00:00',
+                slotMaxTime: '20:00:00',
                 initialView: 'timeGridDay',
                 headerToolbar: {
                     left: 'prev,next today',
@@ -76,6 +78,20 @@
                 },
 
                 events: events,
+                slotDuration: '00:15:00',
+
+                eventContent: function(arg) {
+                    return {
+                        html: '<div style="font-size: 16px;">' + arg.event.title + '</div>' + '<div style="font-size: 12px;">' + arg.timeText + '</div>'
+                    };
+                },
+
+                slotLabelFormat: {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    omitZeroMinute: false,
+                    hour12: false
+                },
             });
             calendar.render();
         });

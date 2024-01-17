@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 @can('event_create')
+{{-- Display the "Add Event" button if the user has the "event_create" permission --}}
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success" href="{{ route("admin.events.create") }}">
@@ -15,10 +16,13 @@
     </div>
 
     <div class="card-body">
+        {{-- DataTable displaying the list of events --}}
         <div class="table-responsive">
             <table class=" table table-bordered table-striped table-hover datatable datatable-Event">
+                {{-- Table Headers --}}
                 <thead>
                     <tr>
+                        {{-- Column Headers --}}
                         <th width="10">
 
                         </th>
@@ -48,9 +52,12 @@
                         </th>
                     </tr>
                 </thead>
+                {{-- Table Body --}}
                 <tbody>
+                    {{-- Loop through events and display its details --}}
                     @foreach($events as $key => $event)
                         <tr data-entry-id="{{ $event->id }}">
+                            {{-- Display event details in each column --}}
                             <td>
 
                             </td>
@@ -76,6 +83,7 @@
                                 {{ $event->description ?? '' }}
                             </td>
                             <td>
+                                {{-- Actions column: View, Edit, Delete --}}
                                 @can('event_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('admin.events.show', $event->id) }}">
                                         {{ trans('global.view') }}

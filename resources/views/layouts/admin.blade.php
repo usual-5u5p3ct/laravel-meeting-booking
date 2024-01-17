@@ -241,6 +241,7 @@
             padding: 10px;
             margin: 40px auto;
             background-color: white;
+            height: fit-content;
         }
 
         .roomSelect {
@@ -263,7 +264,7 @@
                 /* Adjust the width for smaller screens */
                 margin-left: auto;
                 margin-right: auto;
-                height: 100vh;
+                /* height: 100vh; */
                 overflow-x: auto;
             }
 
