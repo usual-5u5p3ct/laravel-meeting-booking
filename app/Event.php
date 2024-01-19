@@ -31,6 +31,7 @@ class Event extends Model
         'updated_at',
         'deleted_at',
         'description',
+        'approved',
     ];
 
     protected function serializeDate(DateTimeInterface $date)

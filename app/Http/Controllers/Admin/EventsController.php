@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Room;
+use App\User;
 use App\Event;
+use Illuminate\Http\Request;
+use App\Services\EventService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MassDestroyEventRequest;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
-use App\Room;
-use App\Services\EventService;
-use App\User;
-use Gate;
-use Illuminate\Http\Request;
+use App\Http\Requests\MassDestroyEventRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class EventsController extends Controller
@@ -110,5 +110,21 @@ class EventsController extends Controller
         Event::whereIn('id', $eventIds)->forceDelete();
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function approve(Event $event)
+    {
+        abort_if(Gate::denies('event_approve'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $event->update(['approved' => true]);
+        return redirect()->back()->with('success', 'Booking approved successfully!');
+    }
+
+    public function reject(Event $event)
+    {
+        abort_if(Gate::denies('event_reject'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $event->update(['approved' => false]);
+        return redirect()->back()->with('success', 'Booking rejected successfully!');
     }
 }

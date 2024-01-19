@@ -46,7 +46,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('my-credits', 'BalanceController@index')->name('balance.index');
     Route::post('add-balance', 'BalanceController@add')->name('balance.add');
 
-    Route::resource('transactions', 'TransactionsController')->only(['index']);
 
-    // Route::get('booking-details', 'BookingsController@sendEmail');
+    Route::post('admin/events/{event}/approve', 'EventsController@approve')->name('admin.events.approve');
+    Route::post('admin/events/{event}/reject', 'EventsController@reject')->name('admin.events.reject');
 });
