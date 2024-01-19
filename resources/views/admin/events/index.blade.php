@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     @if (session('success'))
-        <div class="alert alert-success">
+        <div id="flash-message" class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
@@ -54,7 +54,10 @@
                                 {{ trans('cruds.event.fields.description') }}
                             </th>
                             <th>
-                                &nbsp;
+                                Actions
+                            </th>
+                            <th>
+                                Approve / Reject
                             </th>
                         </tr>
                     </thead>
@@ -112,7 +115,8 @@
                                                 value="{{ trans('global.delete') }}">
                                         </form>
                                     @endcan
-
+                                </td>
+                                <td>
                                     @can('event_approve')
                                         {{-- <p>User has access!</p>
                                     @else
@@ -204,5 +208,10 @@
                     .columns.adjust();
             });
         })
+
+        $(document).ready(function() {
+            // Fade out the flash message after 3 seconds (3000 milliseconds)
+            $('#flash-message').delay(3000).fadeOut(400);
+        });
     </script>
 @endsection
