@@ -34,6 +34,10 @@ class SystemCalendarController extends Controller
                 ->when($request->input('user_id'), function ($query) use ($request) {
                     $query->where('user_id', $request->input('user_id'));
                 })
+                // Condition to fetch only approved events
+                ->when($source['model'] === '\\App\\Event', function ($query) {
+                    $query->where('approved', true);
+                })
                 ->get();
             foreach ($models as $model) {
                 $crudFieldValue = $model->getOriginal($source['date_field']);

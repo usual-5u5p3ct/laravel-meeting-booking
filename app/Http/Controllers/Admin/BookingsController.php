@@ -77,13 +77,15 @@ class BookingsController extends Controller
             'room_id' => $request->input('room_id'),
             'title' => $request->input('title'),
             'start_time' => $request->input('start_time'),
-            'end_time' => $request->input('end_time')
+            'end_time' => $request->input('end_time'),
+            'approved' => 'Pending'
         ];
 
         // Send email to user
         Mail::to(auth()->user()->email)->send(new SendEmail($userBookingDetails, 'user'));
 
         $adminBookingDetails = [
+            'id' => $event->id,
             'room_id' => $request->input('room_id'),
             'title' => $request->input('title'),
             'start_time' => $request->input('start_time'),

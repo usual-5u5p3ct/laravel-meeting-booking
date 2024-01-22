@@ -485,7 +485,8 @@
                                                                     style="padding:0;Margin:0">
                                                                     <h3 align="center"
                                                                         style="Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:20px;font-style:normal;font-weight:normal;line-height:24px;color:#333333">
-                                                                        <strong>New Request for Booking</strong></h3>
+                                                                        <strong>Booking Status</strong>
+                                                                    </h3>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -494,30 +495,7 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td align="left"
-                                            style="padding:0;Margin:0;padding-right:20px;padding-left:20px;padding-top:20px">
-                                            <table cellpadding="0" cellspacing="0" role="none"
-                                                style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                                                <tr>
-                                                    <td align="left" style="padding:0;Margin:0;width:560px">
-                                                        <table cellpadding="0" cellspacing="0" width="100%"
-                                                            role="presentation"
-                                                            style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                                                            <tr>
-                                                                <td align="left" style="padding:0;Margin:0">
-                                                                    <p
-                                                                        style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
-                                                                        <strong>Event ID:</strong>   {{ $bookings['id'] }}</p>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                    <tr>
+                                    {{-- <tr>
                                         <td align="left"
                                             style="padding:0;Margin:0;padding-right:20px;padding-left:20px;padding-top:20px">
                                             <table cellpadding="0" cellspacing="0" role="none"
@@ -608,7 +586,7 @@
                                                 </tr>
                                             </table>
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                     <tr>
                                         <td align="left"
                                             style="padding:0;Margin:0;padding-right:20px;padding-left:20px;padding-top:20px">
@@ -621,9 +599,27 @@
                                                             style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                             <tr>
                                                                 <td align="left" style="padding:0;Margin:0">
-                                                                    <a href="{{ url('admin/events') }}"
-                                                                        style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#15b2f6;font-size:14px">
-                                                                        Approve/Reject Booking</a>
+                                                                    <p
+                                                                        style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
+                                                                        Hi there, {{ $event->user->name }}!, </p>
+
+                                                                    @if ($status === 'approved')
+                                                                        {{-- Booking approved --}}
+                                                                        <p
+                                                                            style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
+                                                                            Your booking for <strong>{{ $event->title }}</strong> has
+                                                                            been
+                                                                            approved!</p>
+                                                                    @elseif ($status === 'rejected')
+                                                                        {{-- Booking rejected --}}
+                                                                        <p
+                                                                            style="Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px">
+                                                                            Unfortunately, your booking for
+                                                                            <strong>{{ $event->title }}</strong> has been rejected.</p>
+                                                                        {{-- @else
+                                                                        <p>Your booking status for {{ $event->name }}
+                                                                            has been updated to {{ $status }}.</p> --}}
+                                                                    @endif
                                                                 </td>
                                                             </tr>
                                                         </table>

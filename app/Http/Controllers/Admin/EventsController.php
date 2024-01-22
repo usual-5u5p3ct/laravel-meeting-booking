@@ -7,8 +7,10 @@ use App\User;
 use App\Event;
 use Illuminate\Http\Request;
 use App\Services\EventService;
+use App\Mail\BookingStatusEmail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Http\Requests\MassDestroyEventRequest;
@@ -117,6 +119,8 @@ class EventsController extends Controller
         abort_if(Gate::denies('event_approve'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $event->update(['approved' => true]);
+        Mail::to($event->user->email)->send(new BookingStatusEmail($event, 'approved'));
+
         return redirect()->back()->with('success', 'Booking approved successfully!');
     }
 
@@ -125,6 +129,8 @@ class EventsController extends Controller
         abort_if(Gate::denies('event_reject'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $event->update(['approved' => false]);
+        Mail::to($event->user->email)->send(new BookingStatusEmail($event, 'rejected'));
+
         return redirect()->back()->with('success', 'Booking rejected successfully!');
     }
 }
