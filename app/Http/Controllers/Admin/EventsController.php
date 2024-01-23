@@ -118,19 +118,23 @@ class EventsController extends Controller
     {
         abort_if(Gate::denies('event_approve'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $event->update(['approved' => true]);
+        $event->update(['approved' => 1]);
         Mail::to($event->user->email)->send(new BookingStatusEmail($event, 'approved'));
 
-        return redirect()->back()->with('success', 'Booking approved successfully!');
+        return redirect()
+            ->back()
+            ->with('success', 'Booking approved successfully!');
     }
 
     public function reject(Event $event)
     {
         abort_if(Gate::denies('event_reject'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $event->update(['approved' => false]);
+        $event->update(['approved' => 0]);
         Mail::to($event->user->email)->send(new BookingStatusEmail($event, 'rejected'));
 
-        return redirect()->back()->with('success', 'Booking rejected successfully!');
+        return redirect()
+            ->back()
+            ->with('success', 'Booking rejected successfully!');
     }
 }

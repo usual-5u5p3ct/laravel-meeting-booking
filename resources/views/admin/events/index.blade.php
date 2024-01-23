@@ -50,14 +50,17 @@
                             <th>
                                 {{ trans('cruds.event.fields.end_time') }}
                             </th>
-                            <th>
+                            {{-- <th>
                                 {{ trans('cruds.event.fields.description') }}
-                            </th>
+                            </th> --}}
                             <th>
                                 Actions
                             </th>
                             <th>
                                 Approve / Reject
+                            </th>
+                            <th>
+                                Status
                             </th>
                         </tr>
                     </thead>
@@ -88,9 +91,9 @@
                                 <td>
                                     {{ $event->end_time ?? '' }}
                                 </td>
-                                <td>
+                                {{-- <td>
                                     {{ $event->description ?? '' }}
-                                </td>
+                                </td> --}}
                                 <td>
                                     {{-- Actions column: View, Edit, Delete, Approve, Reject --}}
                                     @can('event_show')
@@ -140,6 +143,15 @@
                                             <button type="submit" class="btn btn-xs btn-danger">Reject</button>
                                         </form>
                                     @endcan
+                                </td>
+                                <td>
+                                    @if ($event->approved == 1)
+                                        <span class="badge badge-success">Approved</span>
+                                    @elseif($event->approved == 0)
+                                        <span class="badge badge-danger">Rejected</span>
+                                    @else
+                                        <span class="badge badge-secondary">Pending</span>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
