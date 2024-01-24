@@ -27,7 +27,7 @@ $(document).ready(function () {
       previous: 'fas fa-chevron-left',
       next: 'fas fa-chevron-right'
     },
-    stepping: 5
+    stepping: 10
   })
 
   $('.timepicker').datetimepicker({
