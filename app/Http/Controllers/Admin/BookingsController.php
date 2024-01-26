@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Room;
 use App\Event;
 use Carbon\Carbon;
+use App\Jobs\EmailJob;
 use App\Mail\SendEmail;
 use Illuminate\Http\Request;
 use App\Services\EventService;
@@ -78,11 +79,12 @@ class BookingsController extends Controller
             'title' => $request->input('title'),
             'start_time' => $request->input('start_time'),
             'end_time' => $request->input('end_time'),
-            'approved' => 'Pending'
+            'approved' => 'Pending',
         ];
 
         // Send email to user
-        Mail::to(auth()->user()->email)->send(new SendEmail($userBookingDetails, 'user'));
+        Mail::to(auth()->user()->email)->queue(new SendEmail($userBookingDetails, 'user', auth()->user()->email));
+        // EmailJob::dispatch($userBookingDetails, 'user')->onQueue('emails');
 
         $adminBookingDetails = [
             'id' => $event->id,
@@ -90,11 +92,12 @@ class BookingsController extends Controller
             'title' => $request->input('title'),
             'start_time' => $request->input('start_time'),
             'end_time' => $request->input('end_time'),
-            'user_email' => auth()->user()->email
+            'user_email' => auth()->user()->email,
         ];
 
         // Send email to admin
-        Mail::to('admin@admin.com')->send(new SendEmail($adminBookingDetails, 'admin'));
+        Mail::to('admin@admin.com')->queue(new SendEmail($adminBookingDetails, 'admin', auth()->user()->email));
+        // EmailJob::dispatch($adminBookingDetails, 'admin')->onQueue('emails');
 
         return redirect()
             ->route('admin.systemCalendar')

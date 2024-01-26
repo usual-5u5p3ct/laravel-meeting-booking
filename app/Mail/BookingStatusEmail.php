@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class BookingStatusEmail extends Mailable
+class BookingStatusEmail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -31,7 +31,7 @@ class BookingStatusEmail extends Mailable
      */
     public function build()
     {
-        return $this->from('admin@booking.com')->view('emails.bookStatus')->with([
+        return $this->from('admin@booking.com')->subject('Booking Status')->view('emails.bookStatus')->with([
             'event' => $this->event,
             'status' => $this->status,
         ]);
