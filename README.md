@@ -33,7 +33,7 @@ Users can easily prebook meeting rooms before their scheduled meetings. The admi
 # Usage
 ### User
 1. User must have an account to log in to the system. 
-![User#1](https://drive.google.com/file/d/1GAzMWO3GIC9V--jI4o1tOTrA-po40uGy/view?usp=sharing)
+![User#1](public/images/book-system-ss/user#1.png)
 2. Select available rooms in the room options, and click **'Book Room'**
 ![User#2](https://drive.google.com/file/d/1NPPN5R9qJaV7h8GzuGHInuGijU55Qpl9/view?usp=drive_link)
 3.  Fill in relevant details for the booking. Once done, submit the booking form and confirm the details.
